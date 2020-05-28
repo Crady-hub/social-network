@@ -11,6 +11,12 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     pub_date = models.DateField(default=timezone.now)
 
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'
 
 class LikeUnlike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -19,5 +25,13 @@ class LikeUnlike(models.Model):
         ('like', 'Like'),
         ('unlike', 'Unlike')
     ]
-    like = models.CharField(max_length=6, choices=LIKE_UNLIKE)
+    like = models.CharField(
+        max_length=6, choices=LIKE_UNLIKE, default='unlike')
     date = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.post
+
+    class Meta:
+        verbose_name = 'Like/Unlike'
+        verbose_name_plural = 'Likes/Unlikes'
