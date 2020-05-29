@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Post
 
 
-class PostSerializer(serializers.ModelSerializer):
+class PostListSerializer(serializers.ModelSerializer):
     """ Список постов """
     author = serializers.SlugRelatedField(slug_field="username", read_only=True)
 
@@ -17,4 +17,4 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'text', 'author')
+        exclude = ('pub_date',)
