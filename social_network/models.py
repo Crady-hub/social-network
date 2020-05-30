@@ -9,7 +9,7 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     text = models.CharField(max_length=1000)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    pub_date = models.DateField(default=timezone.now)
+    pub_date = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -21,16 +21,11 @@ class Post(models.Model):
 class LikeUnlike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    LIKE_UNLIKE = [
-        ('like', 'Like'),
-        ('unlike', 'Unlike')
-    ]
-    like = models.CharField(
-        max_length=6, choices=LIKE_UNLIKE, default='unlike')
-    date = models.DateField(auto_now=True)
+    like = models.BooleanField('Like')
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.post
+        return self.post.title
 
     class Meta:
         verbose_name = 'Like/Unlike'
