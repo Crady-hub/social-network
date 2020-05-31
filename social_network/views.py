@@ -1,12 +1,14 @@
 from rest_framework import permissions
 from rest_framework import generics
 from django_filters import rest_framework as filters
+from django.db.models import Count, Q
 
 from .models import Post, LikeUnlike
 from .serializer import (
     PostListSerializer,
     PostCreateSerializer,
-    LikeUnlikeCreateUpdateSerializer
+    LikeUnlikeCreateUpdateSerializer,
+    LikeUnlikeListSerializer
 )
 
 
@@ -30,12 +32,21 @@ class LikeUnlikeFilter(filters.FilterSet):
         model = LikeUnlike
         fields = ('date',)
 
-class LikeUnlikeCreateUpdateView(generics.ListCreateAPIView):
+
+class LikeUnlikeCreateUpdateView(generics.CreateAPIView):
     """ Создаем/обновляем/список лайк """
 
     queryset = LikeUnlike.objects.all()
     serializer_class = LikeUnlikeCreateUpdateSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
+
+
+class LikeUnlikeListView(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = LikeUnlikeFilter
+    serializer_class = LikeUnlikeListSerializer
 
+    def get_queryset(self):
+        likes = LikeUnlike.objects.values('date').annotate(
+            likes=Count('like', filter=Q(like=True)))
+        return likes

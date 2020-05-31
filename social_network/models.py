@@ -18,6 +18,7 @@ class Post(models.Model):
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
+
 class LikeUnlike(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -30,3 +31,4 @@ class LikeUnlike(models.Model):
     class Meta:
         verbose_name = 'Like/Unlike'
         verbose_name_plural = 'Likes/Unlikes'
+

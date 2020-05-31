@@ -25,9 +25,6 @@ class PostCreateSerializer(serializers.ModelSerializer):
 class LikeUnlikeCreateUpdateSerializer(serializers.ModelSerializer):
     """ Создание/обновление/список лайков """
 
-    post = PostListSerializer(read_only=True)
-    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
-
     class Meta:
         model = LikeUnlike
         fields = '__all__'
@@ -39,3 +36,12 @@ class LikeUnlikeCreateUpdateSerializer(serializers.ModelSerializer):
             defaults={'like': validate_data.get('like')}
         )
         return like_unlike
+
+
+class LikeUnlikeListSerializer(serializers.ModelSerializer):
+    
+    likes = serializers.IntegerField()
+
+    class Meta:
+        model = LikeUnlike
+        fields = ('date', 'likes',)
