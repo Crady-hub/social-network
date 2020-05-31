@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_network.apps.SocialNetworkConfig',
+    
     'rest_framework',
     'djoser',
     'django_filters',
-    'social_network'
 ]
 
 MIDDLEWARE = [

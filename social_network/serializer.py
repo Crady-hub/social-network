@@ -23,7 +23,7 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
 
 class LikeUnlikeCreateUpdateSerializer(serializers.ModelSerializer):
-    """ Создание/обновление/список лайков """
+    """ Создание/обновление лайков """
 
     class Meta:
         model = LikeUnlike
@@ -39,7 +39,8 @@ class LikeUnlikeCreateUpdateSerializer(serializers.ModelSerializer):
 
 
 class LikeUnlikeListSerializer(serializers.ModelSerializer):
-    
+    """ Вывод количества лайков в диапазоне дат """
+
     likes = serializers.IntegerField()
 
     class Meta:

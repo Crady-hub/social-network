@@ -1,5 +1,4 @@
-from rest_framework import permissions
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django_filters import rest_framework as filters
 from django.db.models import Count, Q
 
@@ -16,7 +15,7 @@ class PostListCreateView(generics.ListCreateAPIView):
     """ Выводит/создает пост """
 
     queryset = Post.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, ]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -26,6 +25,7 @@ class PostListCreateView(generics.ListCreateAPIView):
 
 
 class LikeUnlikeFilter(filters.FilterSet):
+    """ Фильтр для выбора диапазона дат"""
     date = filters.DateFromToRangeFilter()
 
     class Meta:
@@ -38,13 +38,16 @@ class LikeUnlikeCreateUpdateView(generics.CreateAPIView):
 
     queryset = LikeUnlike.objects.all()
     serializer_class = LikeUnlikeCreateUpdateSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class LikeUnlikeListView(generics.ListAPIView):
+    """ Список дат с количеством лайков """
+
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = LikeUnlikeFilter
     serializer_class = LikeUnlikeListSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         likes = LikeUnlike.objects.values('date').annotate(
