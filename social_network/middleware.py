@@ -2,6 +2,7 @@ from .models import UserActivity
 from django.middleware.common import MiddlewareMixin
 
 class UserActivityMiddleware(MiddlewareMixin):
+    """ Активность пользователя """
     def __init__(self, get_response):
         self.get_response = get_response
 
